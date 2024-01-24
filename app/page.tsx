@@ -2,6 +2,7 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
+import { useThrottling } from "../hook";
 
 async function getItems(page: number, limit: number) {
   const response = await fetch(
@@ -11,34 +12,33 @@ async function getItems(page: number, limit: number) {
   const data = await response.json();
 
   return {
-    page: page && page + 1,
+    page: page,
     list: data as Item[],
   };
 }
 
 function Home() {
-  const limit = 300;
+  const limit = 30;
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<APIResponse>({
-    queryKey: ["home-item"],
+    queryKey: ["home-data-list"],
     queryFn: ({ pageParam }) => getItems(pageParam as number, limit),
-    getNextPageParam: (res) => res.page,
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage = allPages.length + 1;
+      return lastPage.list.length === 0 ? undefined : nextPage;
+    },
     initialPageParam: 1,
   });
 
-  useEffect(() => {
-    function handleScroll() {
-      const { scrollTop, offsetHeight } = document.documentElement;
+  const handleScroll = useThrottling(() => {
+    const { scrollTop, offsetHeight } = document.documentElement;
 
-      if (window.innerHeight + scrollTop >= offsetHeight) {
-        if (!hasNextPage) {
-          fetchNextPage();
-        }
-      }
+    if (hasNextPage && window.innerHeight + scrollTop >= offsetHeight) {
+      fetchNextPage();
     }
+  });
 
-    console.log(hasNextPage);
-
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [data]);
