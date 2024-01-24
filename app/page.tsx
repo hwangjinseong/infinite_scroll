@@ -1,7 +1,7 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useThrottling } from "../hook";
 
 async function getItems(page: number, limit: number) {
@@ -20,6 +20,8 @@ async function getItems(page: number, limit: number) {
 function Home() {
   const limit = 30;
 
+  const loading = useRef<boolean>(false);
+
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<APIResponse>({
     queryKey: ["home-data-list"],
     queryFn: ({ pageParam }) => getItems(pageParam as number, limit),
@@ -30,18 +32,23 @@ function Home() {
     initialPageParam: 1,
   });
 
-  const handleScroll = useThrottling(() => {
+  const handleScroll = useThrottling(async () => {
     const { scrollTop, offsetHeight } = document.documentElement;
 
-    if (hasNextPage && window.innerHeight + scrollTop >= offsetHeight) {
-      fetchNextPage();
+    console.log(loading.current);
+    if (hasNextPage && scrollTop >= offsetHeight - window.innerHeight - 3000) {
+      if (loading.current === false) {
+        loading.current = true;
+        await fetchNextPage();
+        loading.current = false;
+      }
     }
   });
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [data]);
+  }, [data, loading]);
 
   const dataList = data?.pages
     .map((item) => item.list.map((itemList) => itemList))
@@ -50,7 +57,7 @@ function Home() {
   return (
     <div>
       {dataList?.map((item) => (
-        <div key={item.id} className="mb-10 border-solid border-2 border-black">
+        <div key={item.id}>
           <li>
             postId : {item.postId}
             <ol>id : {item.id}</ol>
