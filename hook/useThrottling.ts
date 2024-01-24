@@ -7,6 +7,8 @@ function useThrottling<T extends Function>(
   const time = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   return () => {
+    if (time.current) return;
+
     callback();
 
     time.current = setTimeout(() => {
