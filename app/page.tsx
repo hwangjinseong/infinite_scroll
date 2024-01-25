@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useInfiniteScroll } from "../hook";
 import getItems from "../service/getItems";
+import { Item } from "../components/InfiniteScroll";
 
 function Home() {
   const limit = 30;
@@ -33,19 +34,18 @@ function Home() {
     .flat();
 
   return (
-    <div>
+    <>
       {dataList?.map((item) => (
-        <div key={item.id}>
-          <li>
-            postId : {item.postId}
-            <ol>id : {item.id}</ol>
-            <ol>name : {item.name}</ol>
-            <ol>email : {item.email}</ol>
-            <ol>body : {item.body}</ol>
-          </li>
-        </div>
+        <Item
+          key={item.id}
+          postId={item.postId}
+          numberId={item.id}
+          name={item.name}
+          email={item.email}
+          body={item.body}
+        />
       ))}
-    </div>
+    </>
   );
 }
 
