@@ -3,19 +3,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useInfiniteScroll } from "../hook";
-
-async function getItems(page: number, limit: number) {
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/comments?_page=${page}&_limit=${limit}`
-  );
-
-  const data = await response.json();
-
-  return {
-    page: page,
-    list: data as Item[],
-  };
-}
+import getItems from "../service/getItems";
 
 function Home() {
   const limit = 30;
