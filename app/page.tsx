@@ -1,25 +1,16 @@
 "use client";
 
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useInfiniteScroll } from "../hook";
-import getItems from "../service/getItems";
 import { Item } from "../components/InfiniteScroll";
+import { useGetItemsQuery } from "../queries/getItemsQueries";
 
 function Home() {
   const limit = 30;
 
   const loading = useRef<boolean>(false);
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<APIResponse>({
-    queryKey: ["home-data-list"],
-    queryFn: ({ pageParam }) => getItems(pageParam as number, limit),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = allPages.length + 1;
-      return lastPage.list.length === 0 ? undefined : nextPage;
-    },
-    initialPageParam: 1,
-  });
+  const { data, fetchNextPage, hasNextPage } = useGetItemsQuery(limit);
 
   useInfiniteScroll(async () => {
     if (hasNextPage && loading.current === false) {
