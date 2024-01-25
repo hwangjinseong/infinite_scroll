@@ -1,42 +1,15 @@
 "use client";
 
-import { useRef } from "react";
-import { useInfiniteScroll } from "../hook";
-import { Item } from "../components/InfiniteScroll";
-import { useGetItemsQuery } from "../queries/getItemsQueries";
+import { useRouter } from "next/navigation";
 
 function Home() {
-  const limit = 30;
-
-  const loading = useRef<boolean>(false);
-
-  const { data, fetchNextPage, hasNextPage } = useGetItemsQuery(limit);
-
-  useInfiniteScroll(async () => {
-    if (hasNextPage && loading.current === false) {
-      loading.current = true;
-      await fetchNextPage();
-      loading.current = false;
-    }
-  }, [data, loading]);
-
-  const dataList = data?.pages
-    .map((item) => item.list.map((itemList) => itemList))
-    .flat();
-
+  const router = useRouter();
   return (
-    <>
-      {dataList?.map((item) => (
-        <Item
-          key={item.id}
-          postId={item.postId}
-          numberId={item.id}
-          name={item.name}
-          email={item.email}
-          body={item.body}
-        />
-      ))}
-    </>
+    <div>
+      <button onClick={() => router.push("/infiniteScroll")}>
+        무한 스크롤
+      </button>
+    </div>
   );
 }
 
