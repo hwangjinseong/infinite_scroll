@@ -1,11 +1,15 @@
 import { useEffect } from "react";
 import { useThrottling } from ".";
 
+interface Options {
+  scrollThreshold?: number;
+  throttleTime?: number;
+}
+
 function useInfiniteScroll<T extends Function>(
   callback: T,
   deps: any[],
-  scrollThreshold: number | undefined = 0,
-  throttleTime: number | undefined = 0
+  { scrollThreshold = 0, throttleTime = 0 }: Options
 ) {
   const handleScroll = useThrottling(() => {
     const { scrollTop, offsetHeight } = document.documentElement;

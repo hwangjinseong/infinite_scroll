@@ -21,8 +21,7 @@ function InfiniteScroll() {
       }
     },
     [data, loading],
-    4000,
-    17
+    { scrollThreshold: 4000, throttleTime: 16 }
   );
 
   return (
