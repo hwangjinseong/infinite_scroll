@@ -22,7 +22,8 @@ function InfiniteScroll() {
       }
     },
     [dataList, loading],
-    4000
+    4000,
+    17
   );
 
   return (

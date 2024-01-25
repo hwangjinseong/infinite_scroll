@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 function useThrottling<T extends Function>(
   callback: T,
-  throttleTime: number | undefined = 16
+  throttleTime: number | undefined
 ) {
   const time = useRef<ReturnType<typeof setTimeout> | null>(null);
 

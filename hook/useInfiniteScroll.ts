@@ -4,7 +4,8 @@ import { useThrottling } from ".";
 function useInfiniteScroll<T extends Function>(
   callback: T,
   deps: any[],
-  scrollThreshold: number | undefined = 0
+  scrollThreshold: number | undefined = 0,
+  throttleTime: number | undefined = 16
 ) {
   const handleScroll = useThrottling(() => {
     const { scrollTop, offsetHeight } = document.documentElement;
@@ -12,7 +13,7 @@ function useInfiniteScroll<T extends Function>(
     if (scrollTop >= offsetHeight - window.innerHeight - scrollThreshold) {
       callback();
     }
-  }, 17);
+  }, throttleTime);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
