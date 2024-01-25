@@ -9,7 +9,7 @@ interface Options {
 function useInfiniteScroll<T extends Function>(
   callback: T,
   deps: any[],
-  { scrollThreshold = 0, throttleTime = 0 }: Options
+  { scrollThreshold = 0, throttleTime = 0 }: Options = {}
 ) {
   const handleScroll = useThrottling(() => {
     const { scrollTop, offsetHeight } = document.documentElement;
