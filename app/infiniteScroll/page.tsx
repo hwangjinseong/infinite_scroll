@@ -1,16 +1,17 @@
 "use client";
 
 import { useRef } from "react";
-import { useGetItemsQuery } from "../../queries/getItemsQueries";
 import { useInfiniteScroll } from "../../hook";
 import { Item } from "../../components/InfiniteScroll";
+import { useInfiniteScrollItems } from "../../businessHook/infiniteScroll";
 
 function InfiniteScroll() {
   const limit = 30;
 
   const loading = useRef<boolean>(false);
 
-  const { data, fetchNextPage, hasNextPage } = useGetItemsQuery(limit);
+  const { dataList, fetchNextPage, hasNextPage } =
+    useInfiniteScrollItems(limit);
 
   useInfiniteScroll(
     async () => {
@@ -21,12 +22,8 @@ function InfiniteScroll() {
       }
     },
     4000,
-    [data, loading]
+    [dataList, loading]
   );
-
-  const dataList = data?.pages
-    .map((item) => item.list.map((itemList) => itemList))
-    .flat();
 
   return (
     <>
