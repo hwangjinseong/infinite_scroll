@@ -6,7 +6,7 @@ function useInfiniteScroll<T extends Function>(
   scrollThreshold: number | undefined = 3000,
   deps: any[]
 ) {
-  const handleScroll = useThrottling(async () => {
+  const handleScroll = useThrottling(() => {
     const { scrollTop, offsetHeight } = document.documentElement;
 
     if (scrollTop >= offsetHeight - window.innerHeight - scrollThreshold) {
