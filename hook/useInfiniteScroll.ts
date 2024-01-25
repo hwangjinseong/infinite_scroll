@@ -5,7 +5,7 @@ function useInfiniteScroll<T extends Function>(
   callback: T,
   deps: any[],
   scrollThreshold: number | undefined = 0,
-  throttleTime: number | undefined = 16
+  throttleTime: number | undefined = 0
 ) {
   const handleScroll = useThrottling(() => {
     const { scrollTop, offsetHeight } = document.documentElement;
