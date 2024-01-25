@@ -7,7 +7,7 @@ function useInfiniteScrollItems(limit: number) {
     .map((item) => item.list.map((itemList) => itemList))
     .flat();
 
-  return { dataList, fetchNextPage, hasNextPage };
+  return { data: dataList, fetchNextPage, hasNextPage };
 }
 
 export default useInfiniteScrollItems;

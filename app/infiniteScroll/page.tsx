@@ -10,8 +10,7 @@ function InfiniteScroll() {
 
   const loading = useRef<boolean>(false);
 
-  const { dataList, fetchNextPage, hasNextPage } =
-    useInfiniteScrollItems(limit);
+  const { data, fetchNextPage, hasNextPage } = useInfiniteScrollItems(limit);
 
   useInfiniteScroll(
     async () => {
@@ -21,14 +20,14 @@ function InfiniteScroll() {
         loading.current = false;
       }
     },
-    [dataList, loading],
+    [data, loading],
     4000,
     17
   );
 
   return (
     <>
-      {dataList?.map((item) => (
+      {data?.map((item) => (
         <Item
           key={item.id}
           postId={item.postId}
