@@ -1,7 +1,10 @@
-import { DetailedHTMLProps, LiHTMLAttributes } from "react";
+import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 interface Props
-  extends DetailedHTMLProps<LiHTMLAttributes<HTMLLIElement>, HTMLLIElement> {
+  extends DetailedHTMLProps<
+    HTMLAttributes<HTMLUListElement>,
+    HTMLUListElement
+  > {
   postId: number;
   numberId: number;
   name: string;
@@ -11,13 +14,13 @@ interface Props
 
 function Item({ postId, numberId, name, email, body, ...props }: Props) {
   return (
-    <li {...props}>
+    <ul {...props}>
       postId : {postId}
-      <ol>id : {numberId}</ol>
-      <ol>name : {name}</ol>
-      <ol>email : {email}</ol>
-      <ol>body : {body}</ol>
-    </li>
+      <li>id : {numberId}</li>
+      <li>name : {name}</li>
+      <li>email : {email}</li>
+      <li>body : {body}</li>
+    </ul>
   );
 }
 
