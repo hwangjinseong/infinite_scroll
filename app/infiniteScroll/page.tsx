@@ -12,13 +12,17 @@ function InfiniteScroll() {
 
   const { data, fetchNextPage, hasNextPage } = useGetItemsQuery(limit);
 
-  useInfiniteScroll(async () => {
-    if (hasNextPage && loading.current === false) {
-      loading.current = true;
-      await fetchNextPage();
-      loading.current = false;
-    }
-  }, [data, loading]);
+  useInfiniteScroll(
+    async () => {
+      if (hasNextPage && loading.current === false) {
+        loading.current = true;
+        await fetchNextPage();
+        loading.current = false;
+      }
+    },
+    4000,
+    [data, loading]
+  );
 
   const dataList = data?.pages
     .map((item) => item.list.map((itemList) => itemList))
