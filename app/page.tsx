@@ -1,8 +1,8 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-import { useThrottling } from "../hook";
+import { useRef } from "react";
+import { useInfiniteScroll } from "../hook";
 
 async function getItems(page: number, limit: number) {
   const response = await fetch(
@@ -32,21 +32,12 @@ function Home() {
     initialPageParam: 1,
   });
 
-  const handleScroll = useThrottling(async () => {
-    const { scrollTop, offsetHeight } = document.documentElement;
-
-    if (hasNextPage && scrollTop >= offsetHeight - window.innerHeight - 3000) {
-      if (loading.current === false) {
-        loading.current = true;
-        await fetchNextPage();
-        loading.current = false;
-      }
+  useInfiniteScroll(async () => {
+    if (hasNextPage && loading.current === false) {
+      loading.current = true;
+      await fetchNextPage();
+      loading.current = false;
     }
-  });
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, [data, loading]);
 
   const dataList = data?.pages
