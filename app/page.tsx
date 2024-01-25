@@ -35,7 +35,6 @@ function Home() {
   const handleScroll = useThrottling(async () => {
     const { scrollTop, offsetHeight } = document.documentElement;
 
-    console.log(loading.current);
     if (hasNextPage && scrollTop >= offsetHeight - window.innerHeight - 3000) {
       if (loading.current === false) {
         loading.current = true;
