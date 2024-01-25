@@ -3,8 +3,8 @@ import { useThrottling } from ".";
 
 function useInfiniteScroll<T extends Function>(
   callback: T,
-  scrollThreshold: number | undefined = 3000,
-  deps: any[]
+  deps: any[],
+  scrollThreshold: number | undefined = 0
 ) {
   const handleScroll = useThrottling(() => {
     const { scrollTop, offsetHeight } = document.documentElement;

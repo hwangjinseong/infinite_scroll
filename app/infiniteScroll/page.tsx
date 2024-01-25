@@ -21,8 +21,8 @@ function InfiniteScroll() {
         loading.current = false;
       }
     },
-    4000,
-    [dataList, loading]
+    [dataList, loading],
+    4000
   );
 
   return (
